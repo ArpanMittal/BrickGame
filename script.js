@@ -5,17 +5,20 @@ var ctx = canvas.getContext('2d'); //to draw on canavas
 //alert(x);
  setInterval(draw, 10);
 
- var x = canavas.width/2;
-var y = canvas.height - 30;
-alert("x");
+ var x = canvas.width/2;
+ var y = canvas.height - 30;
+ var dx = 2;
+ var dy = -2;
 
 function draw(){
 	//console.write(x);
 	ctx.beginPath();
-	ctx.arc(50, 50, 10, 0, Math.PI*2);
+	ctx.arc(x, y, 10, 0, Math.PI*2);
 	ctx.fillStyle = "#0095DD"
 	ctx.fill();
 	ctx.closePath();
+	x += dx;
+	y += dy;
 }
 // ctx.beginPath();
 // ctx.rect(20, 40, 50, 50);
