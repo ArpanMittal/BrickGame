@@ -1,35 +1,37 @@
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d'); //to draw on canavas
 
-var x = canavas.width/2;
+
+//alert(x);
+ setInterval(draw, 10);
+
+ var x = canavas.width/2;
 var y = canvas.height - 30;
-// setInterval(draw, 10);
+alert("x");
 
- 
+function draw(){
+	//console.write(x);
+	ctx.beginPath();
+	ctx.arc(50, 50, 10, 0, Math.PI*2);
+	ctx.fillStyle = "#0095DD"
+	ctx.fill();
+	ctx.closePath();
+}
+// ctx.beginPath();
+// ctx.rect(20, 40, 50, 50);
+// ctx.fillStyle = "#FF0000";
+// ctx.fill();
+// ctx.closePath();
 
-// function draw(){
-// 	//console.write(x);
-// 	ctx.beginPath();
-// 	ctx.arc(50, 50, 10, 0, Math.PI*2);
-// 	ctx.fillStyle = "#0095DD"
-// 	ctx.fill();
-// 	ctx.closePath();
-// }
-ctx.beginPath();
-ctx.rect(20, 40, 50, 50);
-ctx.fillStyle = "#FF0000";
-ctx.fill();
-ctx.closePath();
+// ctx.beginPath();
+// ctx.arc(240, 160, 20, 0, Math.PI*2, false);
+// ctx.fillStyle = "green";
+// ctx.fill();
+// ctx.closePath();
 
-ctx.beginPath();
-ctx.arc(240, 160, 20, 0, Math.PI*2, false);
-ctx.fillStyle = "green";
-ctx.fill();
-ctx.closePath();
-
-ctx.beginPath();
-ctx.rect(160, 10, 100, 40);
-ctx.strokeStyle = 'rgba(0, 0, 255, 0.5)';
-ctx.stroke();
-ctx.closePath();
+// ctx.beginPath();
+// ctx.rect(160, 10, 100, 40);
+// ctx.strokeStyle = 'rgba(0, 0, 255, 0.5)';
+// ctx.stroke();
+// ctx.closePath();
 
