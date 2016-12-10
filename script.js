@@ -10,7 +10,21 @@ var paddleHeight = 10;
 var paddleX = (canvas.width - paddleWidth )/2;
 var rightPressed = false;
 var leftPressed = false;
+var brickRowCount = 3;
+var brickColumnCount = 5;
+var brickWidth = 75;
+var brickHeight = 20;
+var brickPadding = 10;
+var brickOffsetTop = 30;
+var brickOffsetLeft = 30;
+var bricks = [];
 
+for(c=0; c<brickColumnCount; c++){
+	bricks[c] = [];
+	for(r=0; r<brickRowCount; r++){
+		bricks[c][r] = {x: 0, y:0, status:1};
+	}
+}
 
  document.addEventListener("keydown" , keyDownHandler);
  document.addEventListener("keyup" , keyUpHandler);
@@ -54,15 +68,67 @@ function drawPaddle()
 	ctx.closePath();
 }
 
+function drawBricks()
+{
+	for(c=0; c<brickColumnCount; c++){
+		for(r=0; r<brickRowCount; r++){
+			if(bricks[c][r].status == 1){
+	 			var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
+				var brickY = (r*(brickHeight + brickPadding))+brickOffsetTop;
+				bricks[c][r].x = brickX;
+				bricks[c][r].y = brickY;
+				ctx.beginPath();
+				ctx.rect(brickX, brickY, brickWidth, brickHeight);
+				ctx.fillStyle = "#0095DD";
+				ctx.fill();
+				ctx.closePath();
+			}
+		}
+	}
+}
+
+function collisionDetection(){
+	for(c=0; c<brickColumnCount; c++){
+		for(r=0; r<brickRowCount; r++){
+			var b = bricks[c][r];
+			if(b.status == 1){
+				if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight){
+					dy = -dy;
+					b.status = 0;
+					//alert("hello");
+				}
+			}
+		}
+	}
+}
+
 function draw(){
 	//console.write(x);
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	drawBall();
 	drawPaddle();
-
-	if( y + dy < 0 + ballRadius || y + dy  > canvas.height - ballRadius ){
+	drawBricks();
+	collisionDetection();
+	if( y + dy < 0 + ballRadius ){
 		dy = -dy;
 	}
+	// else if ( y + dy  > canvas.height - ballRadius ){
+	// 	alert("game over");
+	// 		document.location.reload();
+	// }
+	else if ( y + dy  > canvas.height - ballRadius )
+	{
+		if( x > paddleX && x < paddleX + paddleWidth )
+		{
+			dy = -dy;
+		}
+		else
+		{
+			//alert("game over");
+			document.location.reload();
+		}
+	}
+
 	if( x + dx < 0 + ballRadius || x + dx > canvas.width - ballRadius ){
 		dx = -dx;
 	}
