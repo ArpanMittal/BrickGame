@@ -17,7 +17,10 @@ var brickHeight = 20;
 var brickPadding = 10;
 var brickOffsetTop = 30;
 var brickOffsetLeft = 30;
+var fps = 15;
+var score = 0;
 var bricks = [];
+var lives = 3;
 
 for(c=0; c<brickColumnCount; c++){
 	bricks[c] = [];
@@ -95,11 +98,27 @@ function collisionDetection(){
 				if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight){
 					dy = -dy;
 					b.status = 0;
-					//alert("hello");
+					score++;
+					if(score == brickRowCount*brickColumnCount){
+						alert("Congratulations! You Win");
+						document.location.reload();
+					}
 				}
 			}
 		}
 	}
+}
+
+function drawScore(){
+	ctx.font = "16px Arial";
+	ctx.fillStyle = "#0095DD";
+	ctx.fillText("Score: "+score, 8, 20);
+}
+
+function drawLives(){
+	ctx.font = "16px Arial";
+	ctx.fillStyle = "#0095DD";
+	ctx.fillText("Lives: "+lives, canvas.width - 65, 20);
 }
 
 function draw(){
@@ -108,6 +127,8 @@ function draw(){
 	drawBall();
 	drawPaddle();
 	drawBricks();
+	drawScore();
+	drawLives();
 	collisionDetection();
 	if( y + dy < 0 + ballRadius ){
 		dy = -dy;
@@ -124,8 +145,18 @@ function draw(){
 		}
 		else
 		{
-			//alert("game over");
-			document.location.reload();
+			lives--;
+			if(lives == 0){
+				//alert("game over");
+				document.location.reload();
+			}
+			else{
+				x = canvas.width/2;
+				y = canvas.height-30;
+				dx = 2;
+				dy = -2;
+				paddleX = (canvas.width - paddleWidth )/2;
+			}
 		}
 	}
 
@@ -141,27 +172,25 @@ function draw(){
 	else if ( leftPressed && paddleX  > 0){
 		paddleX -= 7;
 	}
+	setTimeout(function() {
+        requestAnimationFrame(draw);
+    }, 1000 / fps)
+	
 
 }
 
-setInterval( draw , 10);
+document.addEventListener("mousemove", mouseMoveHandler);
 
+function mouseMoveHandler(e){
+	var relativeX = e.clientX - canvas.offsetLeft;
+	if(relativeX > 0 ){
+		if( relativeX < canvas.width){
+			paddleX = relativeX - paddleWidth/2;
+		}else{
+			paddleX = relativeX;
+		}
+	}
+}
+draw();
 
-// ctx.beginPath();
-// ctx.rect(20, 40, 50, 50);
-// ctx.fillStyle = "#FF0000";
-// ctx.fill();
-// ctx.closePath();
-
-// ctx.beginPath();
-// ctx.arc(240, 160, 20, 0, Math.PI*2, false);
-// ctx.fillStyle = "green";
-// ctx.fill();
-// ctx.closePath();
-
-// ctx.beginPath();
-// ctx.rect(160, 10, 100, 40);
-// ctx.strokeStyle = 'rgba(0, 0, 255, 0.5)';
-// ctx.stroke();
-// ctx.closePath();
 
